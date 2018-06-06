@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
 
 #define MEMSIZ 4096
 
@@ -20,12 +21,16 @@ void init_machine(struct machine_t* machine) {
 	machine -> sp = machine -> i = machine -> dt =machine -> st = 0x00;
 	machine -> pc = 0x200;
 
-	for(int i = 0; i < MEMSIZ; i++)
+	memset(machine -> mem, 0, MEMSIZ);
+	memset(machine -> stack, 0, 16);
+	memset(machine -> v, 0, 16);
+
+	/*for(int i = 0; i < MEMSIZ; i++)
 		machine -> mem[i] = 0x00;
 	for(int i = 0; i < MEMSIZ; i++) {
 		machine -> stack[i] = 0;
 		machine -> v[i] = 0;
-	}
+	}*/
 }
 
 void load_rom(struct machine_t* machine) {
