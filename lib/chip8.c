@@ -37,7 +37,7 @@ void load_rom(struct machine_t* machine) {
 	FILE* fp = fopen("PONG", "r");
 
 	if(fp == NULL) {
-		fprintf(stderr, "Cannot open ROM file.\n");
+		fprintf(stderr, "ERROR: Cannot open ROM file.\n");
 		exit(1);
 	}
 
