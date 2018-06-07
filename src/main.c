@@ -118,7 +118,7 @@ int main(int argc, const char * argv[]) {
 						break;
 					case 0xE:
 						//SHR x. V[x] = V[x] << 1
-						mac.v[0xF] = (mac.v[x] & 0x80 != 0);
+						mac.v[0xF] = ((mac.v[x] & 0x80) != 0);
 						mac.v[x] <<= 1;
 						printf("SHL %x\n", x);
 						break;
