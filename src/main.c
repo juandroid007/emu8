@@ -12,7 +12,8 @@ int main(int argc, const char * argv[]) {
 	while(!damnQuit) {
 		//Leer opcode
 		uint16_t opcode = (mac.mem[mac.pc] << 8) | mac.mem[mac.pc + 1];
-		mac.pc = (mac.pc +2) & 0x0FFF;
+
+		mac.pc = (mac.pc + 2) & (MEMSIZ - 1);
 
 		//mac.pc += 2;
 		/*if(mac.pc == MEMSIZ)
@@ -123,22 +124,30 @@ int main(int argc, const char * argv[]) {
 						break;
 				}
 			case 9:
-				//WIP: Opcodes C:
+				//SNE x, y. V[x] != V[y] -> pc += 2
+				if(mac.v[x] != mac.v[y])
+					mac.pc = (mac.pc +2) & 0xFFF;
 				printf("SNE %x %x\n", x, y);
 				break;
 			case 0xA:
+				//LD I, nnn. I = nnn
+				mac.i = nnn; 
 				printf("LD I, %x\n", nnn);
 				break;
 			case 0xB:
+				//JP V0, nnn. pc = V[0] + nnn
+				mac.pc = mac.v[0] + nnn; 
 				printf("JP V0, %x\n", nnn);
 				break;
 			case 0xC:
+				//TODO
 				printf("RND %x %x\n", x, kk);
 				break;
 			case 0xD:
 				printf("DRW %x %x %x\n", x, y, n);
 				break;
 			case 0xE:
+				//TODO
 				if(kk == 0x9E) {
 					printf("SKP %x\n", x);
 				} else if(kk == 0xA1) {
@@ -148,30 +157,44 @@ int main(int argc, const char * argv[]) {
 			case 0xF:
 				switch(kk) {
 					case 0x07:
+						//LD V[x], DT. V[x] = DT
+						mac.v[x] = mac.dt;
 						printf("LD %x, DT\n", x);
 						break;
 					case 0x0A:
+						//TODO
 						printf("LD %x, K\n", x);
 						break;
 					case 0x15:
+						//LD DY, V[x] -> DT = V[x]
+						mac.dt = mac.v[x];
 						printf("LD DT, %x\n", x);
 						break;
 					case 0x18:
+						//LD, ST. V[x] -> ST = V[x]
+						//TODO
+						mac.st = mac.v[x];
 						printf("LD ST,%x\n", x);
 						break;
 					case 0x1E:
+						//ADD I, V[x] -> I += V[x]
+						mac.i += mac.v[x];
 						printf("ADD I, %x\n", x);
 						break;
 					case 0x29:
+						//TODO
 						printf("LD F, %x\n", x);
 						break;
 					case 0x33:
+						//TODO
 						printf("LD B,%x\n", x);
 						break;
 					case 0x55:
+						//TODO
 						printf("LD [I], %x\n", x);
 						break;
 					case 0x65:
+						//TODO
 						printf("LD %x, [I]\n", x);
 						break;
 				}
