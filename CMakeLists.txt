@@ -3,7 +3,14 @@ cmake_minimum_required(VERSION 2.8)
 
 project(emu8)
 
-add_definitions( "-g -m64 -O3 -lSDL -lSDL_mixer" )
+INCLUDE(FindPkgConfig)
+
+add_definitions( "-g -m64 -O0" )
+
+PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
+PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
 
 add_subdirectory(src)
 add_subdirectory(lib)
+
+INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIRS})

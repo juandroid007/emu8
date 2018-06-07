@@ -1,7 +1,51 @@
-#include <SDL2/SDL.h>
 #include "chip8.c"
 
-int main(int argc, const char * argv[]) {
+int main(int argc, char const *argv[]) {
+	SDL_Init(SDL_INIT_EVERYTHING);
+
+	SDL_Window* win = SDL_CreateWindow("Emu8",
+		SDL_WINDOWPOS_CENTERED,
+		SDL_WINDOWPOS_CENTERED,
+		64 * 10, 32 * 10,
+		SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
+
+	SDL_Renderer* rnd = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
+
+	SDL_Texture* tex = SDL_CreateTexture(rnd, SDL_PIXELFORMAT_RGBA8888,
+		SDL_TEXTUREACCESS_STREAMING,
+		64, 32);
+
+	int pitch;
+	Uint32* pixels;
+	SDL_LockTexture(tex, NULL, (void **) &pixels, &pitch);
+
+	memset(pixels, 0xEE, 32 * pitch);
+
+	SDL_UnlockTexture(tex);
+
+	SDL_Event ev;
+
+	int damnQuit = 0;
+
+	while(!damnQuit) {
+		SDL_RenderClear(rnd);
+		SDL_RenderCopy(rnd, tex, NULL, NULL);
+		SDL_RenderPresent(rnd);
+
+		SDL_WaitEvent(&ev);
+		if(ev.type == SDL_QUIT) {
+			damnQuit = 1;
+		}
+	}
+
+	SDL_DestroyRenderer(rnd);
+	SDL_DestroyWindow(win);
+	SDL_Quit();
+
+	return 0;
+}
+
+/*(int main(int argc, char const *argv[]) {
 	struct machine_t mac;
 
 	init_machine(&mac);
@@ -13,11 +57,11 @@ int main(int argc, const char * argv[]) {
 		//Leer opcode
 		uint16_t opcode = (mac.mem[mac.pc] << 8) | mac.mem[mac.pc + 1];
 
-		mac.pc = (mac.pc + 2) & (MEMSIZ - 1);
+		mac.pc = (mac.pc + 2) & 0xFFF;
 
 		//mac.pc += 2;
-		/*if(mac.pc == MEMSIZ)
-			mac.pc = 0;*/
+		//if(mac.pc == MEMSIZ)
+		//	mac.pc = 0;
 
 		uint16_t nnn = opcode & 0x0FFF;
 		uint8_t kk = opcode & 0xFF;
@@ -206,4 +250,4 @@ int main(int argc, const char * argv[]) {
 	printf("\nSucces.\n");
 
 	return 0;
-}
+}*/

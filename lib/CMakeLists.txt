@@ -5,4 +5,4 @@ add_library(emu8lib STATIC
 
 target_include_directories(emu8lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
-
+TARGET_LINK_LIBRARIES(emu8lib ${SDL2_LIBRARIES} ${SDL2IMAGE_LIBRARIES})

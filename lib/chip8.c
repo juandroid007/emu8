@@ -3,6 +3,8 @@
 #include <stdint.h>
 #include <string.h>
 
+#include <SDL2/SDL.h>
+
 #define MEMSIZ 4096
 
 struct machine_t {
@@ -22,7 +24,7 @@ void init_machine(struct machine_t* machine) {
 	machine -> pc = 0x200;
 
 	memset(machine -> mem, 0, MEMSIZ);
-	memset(machine -> stack, 0, 16);
+	memset(machine -> stack, 0, 32);
 	memset(machine -> v, 0, 16);
 
 	/*for(int i = 0; i < MEMSIZ; i++)
