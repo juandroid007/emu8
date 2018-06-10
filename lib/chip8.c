@@ -36,12 +36,14 @@ struct machine_t {
 	uint8_t dt, st;			//Temporizadores
 
 	char screen[2048];		//Screen
+	char wait_input;		//Tecla de espera
 };
 
 void init_machine(struct machine_t* machine) {
 	memset(machine, 0x00, sizeof(struct machine_t));
     memcpy(machine->mem + 0x50, hexcodes, 80);
     machine->pc = 0x200;
+    machine->wait_input = -1;
 
 	/*machine -> sp = machine -> i = machine -> dt =machine -> st = 0x00;
 	machine -> pc = 0x200;
@@ -52,7 +54,7 @@ void init_machine(struct machine_t* machine) {
 }
 
 void load_rom(struct machine_t* machine) {
-	FILE* fp = fopen("PONG", "r");
+	FILE* fp = fopen("INVADERS", "r");
 
 	if(fp == NULL) {
 		fprintf(stderr, "ERROR: Cannot open ROM file.\n");

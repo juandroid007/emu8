@@ -1,8 +1,6 @@
 #include "cpu.c"
 #include <time.h>
 
-#include <SDL2/SDL.h>
-
 static void expand(char* from, Uint32* to){
     for(int i = 0; i < 2048; i++) {
         to[i] = (from[i]) ? -1: 0;
@@ -67,7 +65,18 @@ int main(int argc, char const *argv[]) {
         }
 
         if (SDL_GetTicks() - cycles > 1) {
-            step_machine(&mac);
+        	if(mac.wait_input == -1) {
+        		step_machine(&mac);
+        	} else {
+        		for(int key = 0; key <= 0xF; key++) {
+        			if(isKeyDown(key)) {
+        				mac.v[(int) mac.wait_input] = key;
+        				mac.wait_input = -1;
+        				break;
+        			}
+        		}
+        	}
+            //step_machine(&mac);
             cycles = SDL_GetTicks();
         }
 

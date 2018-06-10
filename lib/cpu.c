@@ -1,5 +1,33 @@
 #include "chip8.c"
 
+#include <SDL2/SDL.h>
+
+char keys[] = {
+    SDL_SCANCODE_X,//0
+    SDL_SCANCODE_1,//1
+    SDL_SCANCODE_2,//2
+    SDL_SCANCODE_3,//3
+    SDL_SCANCODE_Q,//4
+    SDL_SCANCODE_W,//5
+    SDL_SCANCODE_E,//6
+    SDL_SCANCODE_A,//7
+    SDL_SCANCODE_S,//8
+    SDL_SCANCODE_D,//9
+    SDL_SCANCODE_Z,//A
+    SDL_SCANCODE_C,//B
+    SDL_SCANCODE_4,//C
+    SDL_SCANCODE_R,//D
+    SDL_SCANCODE_F,//E
+    SDL_SCANCODE_V //F
+};
+
+static int isKeyDown(char key) {
+    const Uint8* sdl_keys = SDL_GetKeyboardState(NULL);
+    Uint8 pressedKey = keys[(int) key];
+
+    return sdl_keys[pressedKey];
+}
+
 void step_machine(struct machine_t* cpu) {
     // Read next opcode from memory.
     uint16_t opcode = (cpu->mem[cpu->pc] << 8) | cpu->mem[cpu->pc + 1];
@@ -142,9 +170,14 @@ void step_machine(struct machine_t* cpu) {
             break;
         case 0xE:
             if (kk == 0x9E) {
-                printf("SKP %x\n", x);
+                //SKP x: if key V[x] isDown is true, skip next instruction
+                if(isKeyDown(cpu->v[x])) {
+                    cpu->pc = (cpu->pc + 2) & 0xFFF;
+                }
             } else if (kk == 0xA1) {
-                printf("SKNP %x\n", x);
+                if(!isKeyDown(cpu->v[x])) {
+                    cpu->pc = (cpu->pc + 2) & 0xFFF;
+                }
             }
             break;
         case 0xF:
@@ -154,6 +187,8 @@ void step_machine(struct machine_t* cpu) {
                     cpu->v[x] = cpu->dt;
                     break;
                 case 0x0A:
+                    //LD X, J: wait input key
+                    cpu->wait_input = x;
                     printf("LD %x, K\n", x);
                     break;
                 case 0x15:
