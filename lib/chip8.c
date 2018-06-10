@@ -3,9 +3,26 @@
 #include <stdint.h>
 #include <string.h>
 
-#include <SDL2/SDL.h>
-
 #define MEMSIZ 4096
+
+char hexcodes[] = {
+    0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
+    0x20, 0x60, 0x20, 0x20, 0x70, // 1
+    0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
+    0xF0, 0x10, 0xF0, 0x10, 0xF0, // 3
+    0x90, 0x90, 0xF0, 0x10, 0x10, // 4
+    0xF0, 0x80, 0xF0, 0x10, 0xF0, // 5
+    0xF0, 0x80, 0xF0, 0x90, 0xF0, // 6
+    0xF0, 0x10, 0x20, 0x40, 0x40, // 7
+    0xF0, 0x90, 0xF0, 0x90, 0xF0, // 8
+    0xF0, 0x90, 0xF0, 0x10, 0xF0, // 9
+    0xF0, 0x90, 0xF0, 0x90, 0x90, // A
+    0xE0, 0x90, 0xE0, 0x90, 0xE0, // B
+    0xF0, 0x80, 0x80, 0x80, 0xF0, // C
+    0xE0, 0x90, 0x90, 0x90, 0xE0, // D
+    0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
+    0xF0, 0x80, 0xF0, 0x80, 0x80  // F
+};
 
 struct machine_t {
 	uint8_t mem[MEMSIZ];	//Banco de memoria disponible para la CPU
@@ -17,22 +34,21 @@ struct machine_t {
 	uint8_t v[16];			//16 registros de propósito general
 	uint16_t i;				//Registro especial de dirección I
 	uint8_t dt, st;			//Temporizadores
+
+	char screen[2048];		//Screen
 };
 
 void init_machine(struct machine_t* machine) {
-	machine -> sp = machine -> i = machine -> dt =machine -> st = 0x00;
+	memset(machine, 0x00, sizeof(struct machine_t));
+    memcpy(machine->mem + 0x50, hexcodes, 80);
+    machine->pc = 0x200;
+
+	/*machine -> sp = machine -> i = machine -> dt =machine -> st = 0x00;
 	machine -> pc = 0x200;
 
 	memset(machine -> mem, 0, MEMSIZ);
 	memset(machine -> stack, 0, 32);
-	memset(machine -> v, 0, 16);
-
-	/*for(int i = 0; i < MEMSIZ; i++)
-		machine -> mem[i] = 0x00;
-	for(int i = 0; i < MEMSIZ; i++) {
-		machine -> stack[i] = 0;
-		machine -> v[i] = 0;
-	}*/
+	memset(machine -> v, 0, 16);*/
 }
 
 void load_rom(struct machine_t* machine) {
