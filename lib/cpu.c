@@ -189,7 +189,6 @@ void step_machine(struct machine_t* cpu) {
                 case 0x0A:
                     //LD X, J: wait input key
                     cpu->wait_input = x;
-                    printf("LD %x, K\n", x);
                     break;
                 case 0x15:
                     // LD DT, V[x] -> DT = V[x]

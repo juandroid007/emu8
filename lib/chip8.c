@@ -53,12 +53,12 @@ void init_machine(struct machine_t* machine) {
 	memset(machine -> v, 0, 16);*/
 }
 
-void load_rom(struct machine_t* machine) {
-	FILE* fp = fopen("INVADERS", "r");
+int load_rom(const char* file, struct machine_t* machine) {
+	FILE* fp = fopen(file, "r");
 
 	if(fp == NULL) {
 		fprintf(stderr, "ERROR: Cannot open ROM file.\n");
-		exit(1);
+		return 1;
 	}
 
 	//Obtención del tamaño del fichero
@@ -66,7 +66,14 @@ void load_rom(struct machine_t* machine) {
 	int length = ftell(fp);
 	fseek(fp, 0, SEEK_SET);
 
+	if(length > 3584) {
+		fprintf(stderr, "ERROR: ROM too large.\n");
+		return 1;
+	}
+
 	fread(machine -> mem + 0x200, length, 1, fp);
 
 	fclose(fp);
+
+	return 0;
 }

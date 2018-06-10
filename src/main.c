@@ -19,8 +19,17 @@ int main(int argc, char const *argv[]) {
 	int is_running = 1;
 	int last_ticks = 0;
 
+	//Leer ROM a cargar
+	char* rom_file;
+
+	if(argc == 1) {
+		fprintf(stderr, "Usage: %s <ROM file>\n", argv[0]);
+		return 1;
+	}
+
 	init_machine(&mac);
-	load_rom(&mac);
+	if(load_rom(argv[1], &mac))
+		return 1;
 
     srand(time(NULL));
 
