@@ -1,13 +1,15 @@
 #include "cpu.c"
 #include <time.h>
 
+#define VERSION "0.0.1"
+
 static void expand(char* from, Uint32* to){
     for(int i = 0; i < 2048; i++) {
         to[i] = (from[i]) ? -1: 0;
     }
 }
 
-int main(int argc, char const *argv[]) {
+int main(int argc, const char** argv) {
 	struct machine_t mac;
 
 	SDL_Window* win;
@@ -22,8 +24,10 @@ int main(int argc, char const *argv[]) {
 	//Leer ROM a cargar
 	char* rom_file;
 
+	printf("Emu8 - A simple CHIP8 emulator.\nProgrammed by Juan Villacorta.\nVersion %s.\n", VERSION);
+
 	if(argc == 1) {
-		fprintf(stderr, "Usage: %s <ROM file>\n", argv[0]);
+		fprintf(stderr, "\nUsage: %s <ROM file>\n", argv[0]);
 		return 1;
 	}
 
