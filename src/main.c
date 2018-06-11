@@ -11,6 +11,7 @@ static void expand(char* from, Uint32* to){
 int main(int argc, const char** argv) {
 	struct machine_t mac;
 
+	SDL_AudioDeviceID dev;
 	SDL_AudioSpec * spec;
 	SDL_Window* win;
 	SDL_Renderer* renderer;
@@ -38,10 +39,12 @@ int main(int argc, const char** argv) {
     SDL_Init(SDL_INIT_EVERYTHING);
 
     spec = init_audio();
+    dev = SDL_OpenAudioDevice(NULL, 0, spec, NULL, SDL_AUDIO_ALLOW_FORMAT_CHANGE);
 
-    if(SDL_OpenAudio(spec, NULL) < 0) {
+    if (dev == 0) {
+    	fprintf(stderr, "SDL Sound Error: %s\n", SDL_GetError());
     	return 1;
-    }
+	}
 
     win = SDL_CreateWindow("Emu8",
         SDL_WINDOWPOS_CENTERED,
@@ -100,9 +103,9 @@ int main(int argc, const char** argv) {
         	if(mac.dt) mac.dt--;
             if(mac.st) {
             	if(--mac.st == 0)
-            		SDL_PauseAudio(1);
+            		SDL_PauseAudioDevice(dev, 1);
             	else
-            		SDL_PauseAudio(0);
+            		SDL_PauseAudioDevice(dev, 0);
             };
 
 
@@ -120,7 +123,7 @@ int main(int argc, const char** argv) {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(win);
     dispose_audio(spec);
-    SDL_CloseAudio();
+    SDL_CloseAudioDevice(dev);
     SDL_Quit();
 
 	return 0;
