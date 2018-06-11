@@ -2,6 +2,7 @@
 add_library(emu8lib STATIC
 	chip8.c
 	cpu.c
+	cpu.h
 )
 
 target_include_directories(emu8lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

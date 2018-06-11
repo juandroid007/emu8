@@ -1,5 +1,4 @@
-#include "cpu.c"
-#include <time.h>
+#include "chip8.c"
 
 #define VERSION "0.0.1"
 
@@ -34,8 +33,6 @@ int main(int argc, const char** argv) {
 	init_machine(&mac);
 	if(load_rom(argv[1], &mac))
 		return 1;
-
-    srand(time(NULL));
 
     SDL_Init(SDL_INIT_EVERYTHING);
 
@@ -89,13 +86,12 @@ int main(int argc, const char** argv) {
         			}
         		}
         	}
-            //step_machine(&mac);
             cycles = SDL_GetTicks();
         }
 
         if(SDL_GetTicks() - last_ticks > (1000 / 60)) {
-        	if (mac.dt) mac.dt--;
-            if (mac.st) mac.st--;
+        	if(mac.dt) mac.dt--;
+            if(mac.st) mac.st--;
 
         	SDL_LockTexture(texture, NULL, &surface -> pixels, &surface -> pitch);
     		expand(mac.screen, (Uint32 *) surface -> pixels);
