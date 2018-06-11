@@ -44,7 +44,7 @@ int main(int argc, const char** argv) {
     if (dev == 0) {
     	fprintf(stderr, "SDL Sound Error: %s\n", SDL_GetError());
     	return 1;
-	}
+    }
 
     win = SDL_CreateWindow("Emu8",
         SDL_WINDOWPOS_CENTERED,
