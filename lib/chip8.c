@@ -199,9 +199,6 @@ void step_machine(struct machine_t* cpu) {
                 case 0x18:
                     // LD ST, V[x] -> ST = V[x]
                     cpu->st = cpu->v[x];
-                    if(cpu->st) {
-                    	SDL_PauseAudio(0);
-                    }
                     break;
                 case 0x1E:
                     // ADD I, V[x] -> I += V[x]

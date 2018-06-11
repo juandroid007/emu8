@@ -119,8 +119,8 @@ int main(int argc, const char** argv) {
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(win);
-    SDL_CloseAudio();
     dispose_audio(spec);
+    SDL_CloseAudio();
     SDL_Quit();
 
 	return 0;
