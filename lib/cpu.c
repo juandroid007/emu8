@@ -1,5 +1,9 @@
-#include <string.h>
 #include "cpu.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <string.h>
+#include <SDL2/SDL.h>
 
 void init_machine(struct machine_t* machine) {
     memset(machine, 0x00, sizeof(struct machine_t));

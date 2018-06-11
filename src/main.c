@@ -1,6 +1,6 @@
 #include "chip8.c"
 
-#define VERSION "0.0.1"
+#define VERSION "0.1.0"
 
 static void expand(char* from, Uint32* to){
     for(int i = 0; i < 2048; i++) {
@@ -11,6 +11,7 @@ static void expand(char* from, Uint32* to){
 int main(int argc, const char** argv) {
 	struct machine_t mac;
 
+	SDL_AudioSpec * spec;
 	SDL_Window* win;
 	SDL_Renderer* renderer;
 	SDL_Texture* texture;
@@ -36,11 +37,17 @@ int main(int argc, const char** argv) {
 
     SDL_Init(SDL_INIT_EVERYTHING);
 
+    spec = init_audio();
+
+    if(SDL_OpenAudio(spec, NULL) < 0) {
+    	return 1;
+    }
+
     win = SDL_CreateWindow("Emu8",
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
         64 * 10, 32 * 10,
-        SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
+        SDL_WINDOW_SHOWN);
 
     renderer = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
 
@@ -91,7 +98,13 @@ int main(int argc, const char** argv) {
 
         if(SDL_GetTicks() - last_ticks > (1000 / 60)) {
         	if(mac.dt) mac.dt--;
-            if(mac.st) mac.st--;
+            if(mac.st) {
+            	if(--mac.st == 0)
+            		SDL_PauseAudio(1);
+            	else
+            		SDL_PauseAudio(0);
+            };
+
 
         	SDL_LockTexture(texture, NULL, &surface -> pixels, &surface -> pitch);
     		expand(mac.screen, (Uint32 *) surface -> pixels);
@@ -106,6 +119,8 @@ int main(int argc, const char** argv) {
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(win);
+    SDL_CloseAudio();
+    dispose_audio(spec);
     SDL_Quit();
 
 	return 0;

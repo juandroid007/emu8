@@ -5,6 +5,7 @@
 
 #ifndef CPU_H_
 #define CPU_H_
+
 #define MEMSIZ 4096
 
 char hexcodes[] = {
