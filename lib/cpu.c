@@ -32,7 +32,7 @@ int load_rom(const char* file, struct machine_t* machine) {
     FILE* fp = fopen(file, "rb");
 
     if(fp == NULL) {
-        fprintf(stderr, "\nERROR: Cannot open ROM file.\n");
+        fprintf(stderr, "\nERROR: Cannot open ROM file.\n\n");
         return 1;
     }
 
@@ -42,7 +42,7 @@ int load_rom(const char* file, struct machine_t* machine) {
     fseek(fp, 0, SEEK_SET);
 
     if(length > 3584) {
-        fprintf(stderr, "\nERROR: ROM too large.\n");
+        fprintf(stderr, "\nERROR: ROM too large.\n\n");
         return 1;
     }
 
@@ -55,9 +55,9 @@ int load_rom(const char* file, struct machine_t* machine) {
 
 int load_hex(const char* file, struct machine_t* machine) {
     FILE* fp = fopen(file, "rb");
-    
+
     if (fp == NULL) {
-        fprintf(stderr, "Cannot open ROM file.\n");
+        fprintf(stderr, "\nERROR: Cannot open ROM file.\n\n");
         return 1;
     }
 
@@ -77,7 +77,8 @@ int load_hex(const char* file, struct machine_t* machine) {
 
     int mempos = 0x200;
     
-    if (length & 0x01) length--;
+    if(length & 0x01) length--;
+
     for (int i = 0; i < length; i += 2)
     {
         char hi = hexfile[i];
@@ -91,7 +92,7 @@ int load_hex(const char* file, struct machine_t* machine) {
         }
 
         machine->mem[mempos++] = hi_b << 4 | lo_b;   
-        if (mempos > 0xFFF)
+        if(mempos > 0xFFF)
             break;
     }
 

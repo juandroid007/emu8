@@ -25,9 +25,6 @@ int main(int argc, const char** argv) {
 	int load_type = 0; //0: load_rom; 1: load_hex;
 	char*file;
 
-	//Leer ROM a cargar
-	char* rom_file;
-
 	printf("Emu8 - A simple CHIP8 emulator.\nProgrammed by Juan Villacorta.\nVersion %s.\n", VERSION);
 
 	if(argc == 2) {
@@ -45,10 +42,12 @@ int main(int argc, const char** argv) {
 	init_machine(&mac);
 	if(load_type == 0) {
 		if(load_rom(file, &mac)) {
+			fprintf(stderr, "\nERROR: Cannot open ROM file.\n\n");
 			return 1;
 		}
 	} else {
 		if(load_hex(file, &mac)) {
+			fprintf(stderr, "\nERROR: Invalid hexadecimal ROM file.\n\n");
 			return 1;
 		}
 	}
