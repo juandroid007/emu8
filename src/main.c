@@ -1,6 +1,6 @@
 #include "chip8.c"
 
-#define VERSION "0.1.0"
+#define VERSION "0.1.4"
 
 static void expand(char* from, Uint32* to){
     for(int i = 0; i < 2048; i++) {
@@ -22,19 +22,41 @@ int main(int argc, const char** argv) {
 	int is_running = 1;
 	int last_ticks = 0;
 
+	int load_type = 0; //0: load_rom; 1: load_hex;
+	char*file;
+
 	//Leer ROM a cargar
 	char* rom_file;
 
 	printf("Emu8 - A simple CHIP8 emulator.\nProgrammed by Juan Villacorta.\nVersion %s.\n", VERSION);
 
-	if(argc == 1) {
-		fprintf(stderr, "\nUsage: %s <ROM file>\n", argv[0]);
+	if(argc == 2) {
+		load_type = 0;
+		file = argv[1];
+	} else if(argc == 3 && memcmp(argv[1], "-h", 2) == 0) {
+		load_type = 1;
+		file = argv[2];
+	} else {
+		fprintf(stderr, "\nUsage: %s [-h] <ROM file>\n", argv[0]);
+		fprintf(stderr, "\n\t-h: if set, will load as hex file.\n\n");
 		return 1;
 	}
 
-	init_machine(&mac);
-	if(load_rom(argv[1], &mac))
+	/*if(argc == 1) {
+		fprintf(stderr, "\nUsage: %s <ROM file>\n", argv[0]);
 		return 1;
+	}*/
+
+	init_machine(&mac);
+	if(load_type == 0) {
+		if(load_rom(file, &mac)) {
+			return 1;
+		}
+	} else {
+		if(load_hex(file, &mac)) {
+			return 1;
+		}
+	}
 
     SDL_Init(SDL_INIT_EVERYTHING);
 
@@ -109,6 +131,7 @@ int main(int argc, const char** argv) {
             };
 
 
+            SDL_Delay(0.5);
         	SDL_LockTexture(texture, NULL, &surface -> pixels, &surface -> pitch);
     		expand(mac.screen, (Uint32 *) surface -> pixels);
     		SDL_UnlockTexture(texture);
@@ -119,7 +142,7 @@ int main(int argc, const char** argv) {
         	last_ticks = SDL_GetTicks();
         }
     }
-
+    printf("\n");
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(win);
     dispose_audio(spec);

@@ -2,9 +2,6 @@
 #include <math.h>
 #include <stdlib.h>
 
-static float tone_pos = 0;
-static float tone_inc = 2 * 3.14159 * 1000 / 44000;
-
 struct audiodata_t {
 	float tone_pos;
 	float tone_inc;
@@ -21,7 +18,7 @@ static void feed(void* udata, Uint8* stream, int len) {
 SDL_AudioSpec* init_audio(void) {
 	struct audiodata_t* audio = malloc(sizeof(struct audiodata_t));
 	audio->tone_pos = 0;
-	audio->tone_inc = 2 * 3.14159 * 1000 / 44000;
+	audio->tone_inc = 2 * PI * 1000 / 44000;
 
 	SDL_AudioSpec* spec = (SDL_AudioSpec*) malloc(sizeof(SDL_AudioSpec));
 	spec->freq = 44000;
