@@ -1,9 +1,13 @@
 # Emu8
 A simple CHIP8 emulator written in C, using SDL2.
 
+![alt text](screenshot.png "PONG2 ROM")
+
 ### Usage:
 
     emu8 <ROM_file>
+    
+You can load hexadecimal roms files with the argumment ````-h <ROM_file>````.
 
 ### Build:
 
