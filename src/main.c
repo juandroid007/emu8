@@ -42,11 +42,6 @@ int main(int argc, const char** argv) {
 		return 1;
 	}
 
-	/*if(argc == 1) {
-		fprintf(stderr, "\nUsage: %s <ROM file>\n", argv[0]);
-		return 1;
-	}*/
-
 	init_machine(&mac);
 	if(load_type == 0) {
 		if(load_rom(file, &mac)) {
