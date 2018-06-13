@@ -24,6 +24,7 @@ int main(int argc, const char** argv) {
 
 	int load_type = 0; //0: load_rom; 1: load_hex;
 	char*file;
+    char title[255];
 
 	printf("Emu8 - A simple CHIP8 emulator.\nProgrammed by Juan Villacorta.\nVersion %s.\n", VERSION);
 
@@ -62,7 +63,10 @@ int main(int argc, const char** argv) {
     	return 1;
     }
 
-    win = SDL_CreateWindow("Emu8",
+    strcpy(title, "Emu8 - ");
+    strcat(title, file);
+
+    win = SDL_CreateWindow(title,
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
         64 * 10, 32 * 10,
