@@ -1,6 +1,22 @@
+/*Emu8 - A simple CHIP8 emulator.
+Copyright (C) 2018  Juan Villacorta
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.*/
+
 #include "chip8.c"
 
-#define VERSION "0.1.4"
+#define VERSION "0.1.5"
 
 static void expand(char* from, Uint32* to){
     for(int i = 0; i < 2048; i++) {
@@ -43,7 +59,7 @@ int main(int argc, const char** argv) {
 	init_machine(&mac);
 	if(load_type == 0) {
 		if(load_rom(file, &mac)) {
-			fprintf(stderr, "\nERROR: Cannot open ROM file.\n\n");
+			//fprintf(stderr, "\nERROR: Cannot open ROM file.\n\n");
 			return 1;
 		}
 	} else {
