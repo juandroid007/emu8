@@ -15,8 +15,6 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.*/
 
 #include "sound.h"
-#include <math.h>
-#include <stdlib.h>
 
 struct audiodata_t {
 	float tone_pos;
