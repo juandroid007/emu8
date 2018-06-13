@@ -52,7 +52,7 @@ int main(int argc, const char** argv) {
 		file = argv[2];
 	} else {
 		fprintf(stderr, "\nUsage: %s [-h] <ROM file>\n", argv[0]);
-		fprintf(stderr, "\n\t-h: if set, will load as hex file.\n\n");
+		fprintf(stderr, "   -h: if set, will load as hex file.\n\n");
 		return 1;
 	}
 
