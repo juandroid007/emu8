@@ -44,18 +44,18 @@ char hexcodes[] = {
 };
 
 struct machine_t {
-    uint8_t mem[MEMSIZ];    //Banco de memoria disponible para la CPU
-    uint16_t pc;            //Contador de programa
+    uint8_t mem[MEMSIZ];    //Memory bank available for the CPU
+    uint16_t pc;            //Program counter
 
-    uint16_t stack[16];     //Pila, con 16 registros de 16 bits
-    uint16_t sp;            //Puntero de pila
+    uint16_t stack[16];     //Heap/Stack, with 16 registers of 16 bits
+    uint16_t sp;            //Out pointer
 
-    uint8_t v[16];          //16 registros de propósito general
-    uint16_t i;             //Registro especial de dirección I
-    uint8_t dt, st;         //Temporizadores
+    uint8_t v[16];          //16 general purpose registers
+    uint16_t i;             //Special address register I
+    uint8_t dt, st;         //Timers
 
     char screen[2048];      //Screen
-    char wait_input;        //Tecla de espera
+    char wait_input;        //Waiting key
 };
 
 #endif

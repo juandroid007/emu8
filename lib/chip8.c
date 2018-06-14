@@ -62,10 +62,11 @@ void step_machine(struct machine_t* cpu) {
     // infernal switch case! (sorry for all the heart attacks here u_u)
     switch (p) {
         case 0:
-            if (opcode == 0x00e0) {
+            if (opcode == 0x00E0) {
                 // CLS
                 memset(cpu->screen, 0, 2048);
-            } else if (opcode == 0x00ee) {
+            } else if (opcode == 0x00EE) {
+                // RET
                 if (cpu->sp > 0)
                     cpu->pc = cpu->stack[--cpu->sp];
             }
@@ -168,9 +169,9 @@ void step_machine(struct machine_t* cpu) {
         case 0xD:
             /*
              * DRW x, y, n:
-             * Dibuja un sprite en el pixel v[x], v[y].
-             * El número de filas a dibujar se dice con n.
-             * El sprite se saca de la dirección de memoria [I].
+             * Draw a sprite in the pixel v[x], v[y].
+             * The number of rows to draw is indicated by n.
+             * The sprite is taken out of the memory address [I].
              */
             cpu->v[15] = 0;
             for (int j = 0; j < n; j++) {
@@ -221,7 +222,7 @@ void step_machine(struct machine_t* cpu) {
                     cpu->i += cpu->v[x];
                     break;
                 case 0x29:
-                    // LD F, V[x] -> I = [posicion de memoria del número V[x]]
+                    // LD F, V[x] -> I = [memory adress of the number v[x]]
                     cpu->i = 0x50 + (cpu->v[x] & 0xF) * 5;
                     break;
                 case 0x33:
@@ -231,12 +232,12 @@ void step_machine(struct machine_t* cpu) {
                     cpu->mem[cpu->i] = (cpu->v[x] / 100); 
                     break;
                 case 0x55:
-                    // LD [I], X -> guarda en I
+                    // LD [I], X -> save in I
                     for (int reg = 0; reg <= x; reg++)
                         cpu->mem[cpu->i + reg] = cpu->v[reg];
                     break;
                 case 0x65:
-                    // LD X, [I] -> lee de I
+                    // LD X, [I] -> read of I
                     for (int reg = 0; reg <= x; reg++)
                         cpu->v[reg] = cpu->mem[cpu->i + reg];
                     break;
