@@ -5,7 +5,7 @@ project(emu8)
 
 INCLUDE(FindPkgConfig)
 
-add_definitions( "-g -m64 -O3" )
+add_definitions( "-m64 -O3 -fomit-frame-pointer" )
 
 PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
 PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
