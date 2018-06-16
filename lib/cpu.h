@@ -48,7 +48,7 @@ struct machine_t {
     uint16_t pc;            //Program counter
 
     uint16_t stack[16];     //Heap/Stack, with 16 registers of 16 bits
-    uint16_t sp;            //Out pointer
+    uint16_t sp;            //Stack pointer
 
     uint8_t v[16];          //16 general purpose registers
     uint16_t i;             //Special address register I

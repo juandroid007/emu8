@@ -144,7 +144,6 @@ int main(int argc, const char** argv) {
             		SDL_PauseAudioDevice(dev, 0);
             };
 
-
             SDL_Delay(0.5);
         	SDL_LockTexture(texture, NULL, &surface -> pixels, &surface -> pitch);
     		expand(mac.screen, (Uint32 *) surface -> pixels);
