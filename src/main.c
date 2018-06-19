@@ -162,5 +162,5 @@ int main(int argc, const char** argv) {
     SDL_CloseAudioDevice(dev);
     SDL_Quit();
 
-	return 0;
+    return 0;
 }
