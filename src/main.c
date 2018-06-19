@@ -40,7 +40,7 @@ int main(int argc, const char** argv) {
 
 	int load_type = 0; //0: load_rom; 1: load_hex;
 	char*file;
-    char title[255];
+	char title[255];
 
 	printf("Emu8 - A simple CHIP8 emulator.\nProgrammed by Juan Villacorta.\nVersion %s.\n", VERSION);
 
