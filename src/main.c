@@ -47,12 +47,12 @@ int main(int argc, const char** argv) {
 	if(argc == 2) {
 		load_type = 0;
 		file = argv[1];
-	} else if(argc == 3 && memcmp(argv[1], "-h", 2) == 0) {
+	} else if((argc == 3 && memcmp(argv[1], "-h", 2) == 0) || (argc == 3 && memcmp(argv[1], "--hexadecimal", 2) == 0)) {
 		load_type = 1;
 		file = argv[2];
 	} else {
-		fprintf(stderr, "\nUsage: %s [-h] <ROM file>\n", argv[0]);
-		fprintf(stderr, "   -h: if set, will load as hex file.\n\n");
+		fprintf(stderr, "\nUsage: %s [-h | --hexadecimal] <ROM file>\n", argv[0]);
+		fprintf(stderr, "   -h | --hexadecimal: if set, will load as hex file.\n\n");
 		return 1;
 	}
 
