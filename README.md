@@ -18,7 +18,7 @@ You can load hexadecimal roms files with the argument ````-h <ROM_file>````.
 
 ### Build:
 
-To build, you must have cmake installed in you OS, and run:
+To build, you must have cmake installed in your OS, and run:
 
     ./clean
   
