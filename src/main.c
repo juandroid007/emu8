@@ -24,6 +24,16 @@ static void expand(char* from, Uint32* to){
 	}
 }
 
+int is_close() {
+    SDL_Event ev;
+    while (SDL_PollEvent(&ev)) {
+        if (ev.type == SDL_QUIT) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 int main(int argc, const char** argv) {
 	struct machine_t mac;
 
@@ -37,6 +47,7 @@ int main(int argc, const char** argv) {
 
 	int is_running = 1;
 	int last_ticks = 0;
+	int delta_sound = 0;
 
 	int load_type = 0; //0: load_rom; 1: load_hex;
 	char*file;
@@ -110,16 +121,7 @@ int main(int argc, const char** argv) {
 
 	int cycles = 0;
 
-	while(is_running) {
-		while(SDL_PollEvent(&event)) {
-			switch(event.type) {
-				case SDL_QUIT:
-					is_running = 0;
-					break;
-
-			}
-		}
-
+	while(!is_close()) {
 		if (SDL_GetTicks() - cycles > 1) {
 			if(mac.wait_input == -1) {
 				step_machine(&mac);
@@ -135,16 +137,22 @@ int main(int argc, const char** argv) {
 			cycles = SDL_GetTicks();
 		}
 
-		if(SDL_GetTicks() - last_ticks > (1000 / 60)) {
-			if(mac.dt) mac.dt--;
+		//Sound Ticks (30 ticks per second for avoid sound glitches)
+		if(SDL_GetTicks() - delta_sound >= (1000 / 30)) {
+			//if(mac.dt) mac.dt--;
 			if(mac.st) {
 				if(--mac.st == 0)
 					SDL_PauseAudioDevice(dev, 1);
 				else
 					SDL_PauseAudioDevice(dev, 0);
-			};
+			}
+			delta_sound = SDL_GetTicks();
+		}
 
-			SDL_Delay(0.5);
+		//Video Ticks
+		if(SDL_GetTicks() - last_ticks >= (1000 / 60)) {
+			if(mac.dt) mac.dt--;
+
 			SDL_LockTexture(texture, NULL, &surface -> pixels, &surface -> pitch);
 			expand(mac.screen, (Uint32 *) surface -> pixels);
 			SDL_UnlockTexture(texture);
@@ -154,7 +162,11 @@ int main(int argc, const char** argv) {
 			SDL_RenderPresent(renderer);
 			last_ticks = SDL_GetTicks();
 		}
+
+		//Magic Function (:
+		SDL_Delay(1);
 	}
+
 	printf("\n");
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(win);
